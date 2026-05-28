@@ -1,14 +1,15 @@
 %define module jsonpickle
-%bcond_without tests
+%bcond tests 1
 
 Name:		python-jsonpickle
-Version:	4.1.1
-Release:	3
+Version:	4.1.2
+Release:	1
 Summary:	Python library for serializing any arbitrary object graph into JSON
-URL:		https://github.com/jsonpickle/jsonpickle
 License:	BSD-3-Clause
 Group:		Development/Python
-Source0:	https://files.pythonhosted.org/packages/source/j/jsonpickle/%{module}-%{version}.tar.gz
+URL:		https://github.com/jsonpickle/jsonpickle
+Source0:	https://github.com/jsonpickle/jsonpickle/archive/v%{version}/%{name}-%{version}.tar.gz
+
 BuildSystem:	python
 BuildArch:	noarch
 BuildRequires:	pkgconfig(python)
@@ -40,27 +41,20 @@ Python library for serializing any arbitrary object graph into JSON.
 It can take almost any Python object and turn the object into JSON.
 Additionally, it can reconstitute the object back into Python.
 
-%prep
-%autosetup -n %{module}-%{version} -p1
-
-# remove remote git badges from readme
-sed -i '1,19d;' README.rst
-
-%build
-%py_build
-
-%install
-%py_install
+%build -p
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 
 %if %{with tests}
 %check
+export CI=true
+export PYTHONPATH="%{buildroot}%{python_sitelib}"
 # NOTE fuzzing tests require atheris which is not packaged, ignore them.
 export CI=true
-%{__python} -m pytest -v --ignore=fuzzing
+pytest --ignore=fuzzing -W ignore::DeprecationWarning
 %endif
 
 %files
-%{py_sitedir}/jsonpickle
-%{py_sitedir}/jsonpickle-*.*-info
 %doc README.rst
-%license LICENSE
+%{python_sitelib}/%{module}
+%{python_sitelib}/%{module}-%{version}.dist-info
+
