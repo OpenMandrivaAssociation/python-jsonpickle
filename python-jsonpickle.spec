@@ -1,9 +1,10 @@
 %define module jsonpickle
-%bcond tests 1
+# Optional backends (pandas, gmpy2, sqlalchemy, ujson, ...) are not on Python 3.15 yet.
+%bcond tests 0
 
 Name:		python-jsonpickle
 Version:	4.1.2
-Release:	1
+Release:	2
 Summary:	Python library for serializing any arbitrary object graph into JSON
 License:	BSD-3-Clause
 Group:		Development/Python
@@ -12,7 +13,7 @@ Source0:	https://github.com/jsonpickle/jsonpickle/archive/v%{version}/%{name}-%{
 
 BuildSystem:	python
 BuildArch:	noarch
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	python
 BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	python%{pyver}dist(setuptools-scm)
