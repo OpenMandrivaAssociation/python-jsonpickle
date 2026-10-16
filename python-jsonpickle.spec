@@ -4,7 +4,7 @@
 
 Name:		python-jsonpickle
 Version:	4.1.2
-Release:	2
+Release:	3
 Summary:	Python library for serializing any arbitrary object graph into JSON
 License:	BSD-3-Clause
 Group:		Development/Python
